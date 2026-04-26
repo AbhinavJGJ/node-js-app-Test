@@ -1,9 +1,6 @@
-// Simple "Hello World" Node.js application
-
 const http = require('http');
 const https = require('https');
 
-const hostname = '127.0.0.1';
 const port = process.env.PORT || 3000;
 
 function fetchAzureFunction(callback) {
@@ -23,11 +20,11 @@ const server = http.createServer((req, res) => {
     if (err) {
       res.end('Error calling Azure Function: ' + err.message);
     } else {
-      res.end('Node JS app Calling Python Azure Function FastAPI; response coming as: ' + azureResponse);
+      res.end('Node JS app working 🚀 Response: ' + azureResponse);
     }
   });
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+server.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
