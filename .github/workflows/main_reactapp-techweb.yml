@@ -1,65 +1,29 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy Node.js app to Azure Web App - reactapp-techweb
+name: Deploy Node App
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
+    branches: [ "main" ]
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
-  build:
-    runs-on: windows-latest
-    permissions:
-      contents: read #This is required for actions/checkout
+  deploy:
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js version
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22.x'
-
-      - name: npm install, build, and test
-        run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
-      
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: node-app
-          path: .
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: node-app
-      
-      - name: Login to Azure
+      - name: Azure Login
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A531DE2702A84BA88C3876AE3AAE24D0 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_50BC0C7AEFE541BEAF47927489A4ED45 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F88DE09BFDED48018AD3FC42FBB6856B }}
+          client-id: 3c970fa0-f80a-4d56-acdb-c3a956ad1095
+          tenant-id: d6240b2a-4029-4a82-9f6f-622ea4b2851a
+          subscription-id: f3886b36-843f-47a1-a520-86b3699a8245
 
-      - name: 'Deploy to Azure Web App'
+      - name: Deploy to Web App
         uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
         with:
-          app-name: 'reactapp-techweb'
-          slot-name: 'Production'
+          app-name: nodejs-webapp
           package: .
-          
