@@ -20,7 +20,7 @@ const server = http.createServer((req, res) => {
     if (err) {
       res.end('Error calling Azure Function: ' + err.message);
     } else {
-      res.end('Node JS app working 🚀 Response: ' + azureResponse);
+      res.end('Abhinav deployment success 🚀 Response: ' + azureResponse);
     }
   });
 });
